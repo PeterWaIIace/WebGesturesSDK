@@ -7,8 +7,8 @@ class Client:
     def __init__(self,v1=False):
         if not v1:
             self.gestures = EyeGestures_v2(300)
-            x = np.arange(0, 1.1, 0.2)
-            y = np.arange(0, 1.1, 0.2)
+            x = np.arange(0, 1.01, 0.33)
+            y = np.arange(0, 1.01, 0.33)
 
             xx, yy = np.meshgrid(x, y)
 

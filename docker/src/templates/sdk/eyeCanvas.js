@@ -10,7 +10,10 @@ calib_cursor.style.zIndex = 2000;
 document.body.appendChild(calib_cursor);
 
 let overlayCanvas = null;
-const wait_limit = 10;
+var calibration_counter = 0;
+var calibration_points = 16;
+var calibration_point = {'x':0, 'y':0};
+var point = {'x':0, 'y':0};
 
 function getUnixTimestamp(){
     return Math.floor(Date.now() / 1000);
@@ -111,10 +114,6 @@ navigator.mediaDevices.getUserMedia({ video: true })
     console.error('Error accessing the camera and microphone:', error);
 });
 
-var calibration_counter = 0;
-var calibration_points = 20;
-var calibration_point = {'x':0, 'y':0};
-var point = {'x':0, 'y':0};
 
 function calibrated(){
     return calibration_counter > calibration_points
@@ -161,6 +160,11 @@ function sendFrame(){
     display_width  = document.body.clientWidth  - 75,
     display_height = document.body.clientHeight - 75,
 
+    console.log("Display width and length",
+        display_width  = document.body.clientWidth  - 75,
+        display_height = document.body.clientHeight - 75,
+    )
+
     socket.emit('msg_data', {
         "height"    : display_height, 
         "width"     : display_width,
@@ -196,9 +200,6 @@ socket.on('rsp', (data) => {
     calib_cursor.style.left = `${calibration_point.x - 100}px`;
     calib_cursor.style.top = `${calibration_point.y - 100}px`;
     //code before the pause
-    let timeout = getUnixTimestamp() - timestamp;
-    wait = Math.max(wait_limit - timeout,0);
-    timestamp = getUnixTimestamp();
-    setTimeout(sendFrame, wait);
+    sendFrame();
 }); 
 
