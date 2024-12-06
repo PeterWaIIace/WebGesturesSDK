@@ -10,6 +10,13 @@ calib_cursor.style.zIndex = 2000;
 document.body.appendChild(calib_cursor);
 
 let overlayCanvas = null;
+const wait_limit = 10;
+
+function getUnixTimestamp(){
+    return Math.floor(Date.now() / 1000);
+}
+
+var timestamp = getUnixTimestamp();
 
 function createVideoElement(){
     let video = document.createElement("video");
@@ -32,8 +39,8 @@ function createOverlayCanvas(){
     overlayCanvas.style.position = 'fixed';
     overlayCanvas.style.top = 0;
     overlayCanvas.style.left = 0;
-    overlayCanvas.style.width = '100%';
-    overlayCanvas.style.height = '100%';
+    overlayCanvas.style.width = '100vw';
+    overlayCanvas.style.height = '100vh';
     overlayCanvas.style.zIndex = 1500;
     
     overlayCanvas.width = window.innerWidth;
@@ -72,8 +79,8 @@ function restoreOriginalCursors() {
 }
 
 function enableTransparentCursors(){
-    cursor.style.background = 'transparent';
-    cursor.style.border = 'transparent';
+    // cursor.style.background = 'transparent';
+    // cursor.style.border = 'transparent';
     calib_cursor.style.background = 'transparent';
     calib_cursor.style.border = 'transparent';
 }
@@ -105,7 +112,7 @@ navigator.mediaDevices.getUserMedia({ video: true })
 });
 
 var calibration_counter = 0;
-var calibration_points = 10;
+var calibration_points = 20;
 var calibration_point = {'x':0, 'y':0};
 var point = {'x':0, 'y':0};
 
@@ -159,7 +166,7 @@ function sendFrame(){
         "width"     : display_width,
         "image"     : imageData ,
         "calibrate" : !calibrated(),
-        "timestamp" : Date.now(),
+        "timestamp" : getUnixTimestamp(),
         "unique_id" : "{{ unique_id }}",
     });
 }
@@ -178,14 +185,20 @@ socket.on('connect', function() {
     socket.emit('on_connect', {"unique_id" : "{{ unique_id }}"});
 });
 
-
 socket.on('rsp', (data) => {
     update_calibrate_point(data["c_x"],data["c_y"])
     update_point(data["x"],data["y"])
     cursor.style.left = `${point.x}px`;
     cursor.style.top = `${point.y}px`;
+    console.log(data["radius"]);
+    calib_cursor.style.width = data["radius"];
+    calib_cursor.style.height = data["radius"];
     calib_cursor.style.left = `${calibration_point.x - 100}px`;
     calib_cursor.style.top = `${calibration_point.y - 100}px`;
-    sendFrame();
+    //code before the pause
+    let timeout = getUnixTimestamp() - timestamp;
+    wait = Math.max(wait_limit - timeout,0);
+    timestamp = getUnixTimestamp();
+    setTimeout(sendFrame, wait);
 }); 
 

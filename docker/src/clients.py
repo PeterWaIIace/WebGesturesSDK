@@ -1,13 +1,22 @@
 from eyeGestures.eyegestures import EyeGestures_v2, EyeGestures_v1
+from eyeGestures.calibration_v2 import Calibrator
 import numpy as np
 
 class Client:
 
     def __init__(self,v1=False):
         if not v1:
-            self.gestures = EyeGestures_v2()
-            self.calibMap = np.array([[0.1,0.1],[0.1,0.9],[0.9,0.9],[0.9,0.1],[0.5,0.5],
-                    [0.5,0.1],[0.5,0.9],[0.9,0.5],[0.1,0.5]])
+            self.gestures = EyeGestures_v2(300)
+            x = np.arange(0, 1.1, 0.2)
+            y = np.arange(0, 1.1, 0.2)
+
+            xx, yy = np.meshgrid(x, y)
+
+            calibration_map = np.column_stack([xx.ravel(), yy.ravel()])
+            # self.calibMap = np.array([[0.1,0.1],[0.1,0.9],[0.9,0.9],[0.9,0.1],[0.5,0.5],
+                    # [0.5,0.1],[0.5,0.9],[0.9,0.5],[0.1,0.5]])
+            np.random.shuffle(calibration_map)
+            self.calibMap = calibration_map
 
             self.gestures.enableCNCalib()
             self.gestures.setFixation(1.0)

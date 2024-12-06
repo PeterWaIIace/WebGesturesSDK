@@ -11,4 +11,4 @@ scipy==1.11.4
 opencv_contrib_python==4.8.1.78
 opencv_python==4.8.1.78
 opencv_python_headless==4.8.1.78
-eyegestures==2.5.4 
+eyegestures==2.7.4 

@@ -71,8 +71,8 @@ def on_stream(data):
     logging.info(f'{datetime.now().strftime("%m:%d:%Y:%H:%M:%S")}: Received data: {data}')
 
     frame = base64cv2(data['image'])
-    # frame = cv2.flip(frame, 1) # no flip works fine
+    frame = cv2.flip(frame, 1) # no flip works fine
     tasks.client_process_data(frame, data, request, emit, request.sid)
-    
+
 if __name__ == '__main__':
     socketio.run(app=flask_app,host="0.0.0.0",port=5000)
