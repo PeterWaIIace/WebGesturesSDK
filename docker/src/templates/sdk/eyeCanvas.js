@@ -24,8 +24,8 @@ var timestamp = getUnixTimestamp();
 function createVideoElement(){
     let video = document.createElement("video");
     video.id = "localVideo";
-    video.width = 360;
-    video.height = 240;
+    // video.width = 360;
+    // video.height = 240;
     video.autoplay = true;
     video.muted = true;
     video.hidden = true;

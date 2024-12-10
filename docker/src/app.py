@@ -30,11 +30,11 @@ celery = Celery(
 )
 celery.conf.update(flask_app.config)
 
-@flask_app.route('/v2_beta_testing')
+@flask_app.route('/engine')
 def index():
     return render_template('v2_test.html')
 
-@flask_app.route('/v2_beta_testing/eyeCanvas.js')
+@flask_app.route('/engine/eyeCanvas.js')
 def eyecanvas():
     # unique_id = tasks.generater_ID()
     #  Generate a random string of letters and digits
@@ -55,18 +55,18 @@ def base64cv2(img):
 
 # Handle WebSocket connections
 
-@socketio.on('on_connect', namespace='/v2_beta_testing/socket.io')
+@socketio.on('on_connect', namespace='/engine/socket.io')
 def on_connect(data):
     tasks.client_create(
         clientData=data,
         request=request
     )
 
-@socketio.on('disconnect', namespace='/v2_beta_testing/socket.io')
+@socketio.on('disconnect', namespace='/engine/socket.io')
 def disconnect():
     tasks.client_remove(request)
 
-@socketio.on('msg_data', namespace='/v2_beta_testing/socket.io')
+@socketio.on('msg_data', namespace='/engine/socket.io')
 def on_stream(data):
     logging.info(f'{datetime.now().strftime("%m:%d:%Y:%H:%M:%S")}: Received data: {data}')
 

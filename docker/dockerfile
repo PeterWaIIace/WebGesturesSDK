@@ -18,7 +18,7 @@ RUN pip install gunicorn
 RUN pip install gevent
 RUN pip install celery
 RUN pip install redis
-RUN pip install eyegestures-2.7.5-py3-none-any.whl
+# RUN pip install eyegestures-2.7.5-py3-none-any.whl
 RUN pip install -r /app/requirements.txt
 EXPOSE 5000
 ENV FLASK_APP=app.py

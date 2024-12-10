@@ -50,4 +50,5 @@ def client_process_data(frame, data, request, emit, sid):
                 "radius" : calibration.acceptance_radius}
         emit('rsp',payload)
     except Exception as e:
-        emit('rsp', {"x" : 0, "y" : 0, "c_x" : 0, "c_y" : 0}, namespace='/v2_beta_testing')
+        print("emit 0")
+        emit('rsp', {"x" : 0, "y" : 0, "c_x" : 0, "c_y" : 0}, namespace='/engine')
