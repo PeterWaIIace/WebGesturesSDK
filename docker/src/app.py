@@ -12,8 +12,8 @@ import base64
 import cv2
 import tasks
 
-flask_app = Flask(__name__,static_folder='static', static_url_path='/v2_beta_testing/static')
-socketio = SocketIO(flask_app,path='/v2_beta_testing/socket.io')
+flask_app = Flask(__name__,static_folder='static', static_url_path='/engine/static')
+socketio = SocketIO(flask_app,path='/engine/socket.io')
 
 # Serve the HTML page with JavaScript for WebSocket communication
 
@@ -32,7 +32,7 @@ celery.conf.update(flask_app.config)
 
 @flask_app.route('/engine')
 def index():
-    return render_template('v2_test.html')
+    return render_template('v2_demo.html')
 
 @flask_app.route('/engine/eyeCanvas.js')
 def eyecanvas():

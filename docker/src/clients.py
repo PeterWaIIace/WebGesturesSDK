@@ -3,8 +3,8 @@ import numpy as np
 
 class Client:
 
-    def __init__(self,v3=False):
-        if not v3:
+    def __init__(self,v2=True):
+        if v2:
             self.gestures = EyeGestures_v2(300)
             x = np.arange(0, 1.01, 0.33)
             y = np.arange(0, 1.01, 0.33)
