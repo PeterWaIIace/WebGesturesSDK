@@ -3,40 +3,23 @@ import numpy as np
 
 class Client:
 
-    def __init__(self,v2=True):
-        if v2:
-            self.gestures = EyeGestures_v2(300)
-            x = np.arange(0, 1.01, 0.33)
-            y = np.arange(0, 1.01, 0.33)
+    def __init__(self):
+        self.gestures = EyeGestures_v2(300)
+        x = np.arange(0, 1.01, 0.33)
+        y = np.arange(0, 1.01, 0.33)
 
-            xx, yy = np.meshgrid(x, y)
+        xx, yy = np.meshgrid(x, y)
 
-            calibration_map = np.column_stack([xx.ravel(), yy.ravel()])
-            # self.calibMap = np.array([[0.1,0.1],[0.1,0.9],[0.9,0.9],[0.9,0.1],[0.5,0.5],
-                    # [0.5,0.1],[0.5,0.9],[0.9,0.5],[0.1,0.5]])
-            np.random.shuffle(calibration_map)
-            self.calibMap = calibration_map
+        calibration_map = np.column_stack([xx.ravel(), yy.ravel()])
+        # self.calibMap = np.array([[0.1,0.1],[0.1,0.9],[0.9,0.9],[0.9,0.1],[0.5,0.5],
+                # [0.5,0.1],[0.5,0.9],[0.9,0.5],[0.1,0.5]])
+        np.random.shuffle(calibration_map)
+        self.calibMap = calibration_map
 
-            self.gestures.enableCNCalib()
-            self.gestures.setFixation(1.0)
-            self.gestures.setClassicImpact(2)
-            self.gestures.uploadCalibrationMap(self.calibMap)
-        else:
-            self.gestures = EyeGestures_v3(300)
-            x = np.arange(0, 1.01, 0.33)
-            y = np.arange(0, 1.01, 0.33)
-
-            xx, yy = np.meshgrid(x, y)
-
-            calibration_map = np.column_stack([xx.ravel(), yy.ravel()])
-            # self.calibMap = np.array([[0.1,0.1],[0.1,0.9],[0.9,0.9],[0.9,0.1],[0.5,0.5],
-                    # [0.5,0.1],[0.5,0.9],[0.9,0.5],[0.1,0.5]])
-            np.random.shuffle(calibration_map)
-            self.calibMap = calibration_map
-
-            self.gestures.setFixation(1.0)
-            self.gestures.uploadCalibrationMap(self.calibMap)
-
+        self.gestures.enableCNCalib()
+        self.gestures.setFixation(1.0)
+        self.gestures.setClassicImpact(2)
+        self.gestures.uploadCalibrationMap(self.calibMap)
         self.users = list()
         self.max_clients = 8 # each client takes from 0.012s to 0.015s to process
 

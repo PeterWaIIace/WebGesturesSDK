@@ -16,9 +16,10 @@ var calibration_point = {'x':0, 'y':0};
 var point = {'x':0, 'y':0};
 
 function getUnixTimestamp(){
-    return Math.floor(Date.now() / 1000);
+    return Math.floor(Date.now());
 }
 
+const interval = 1000 / 10;
 var timestamp = getUnixTimestamp();
 
 function createVideoElement(){
@@ -200,6 +201,9 @@ socket.on('rsp', (data) => {
     calib_cursor.style.left = `${calibration_point.x - 100}px`;
     calib_cursor.style.top = `${calibration_point.y - 100}px`;
     //code before the pause
-    sendFrame();
+    // const interval = 1000 / 30;
+    const timeout = Math.max(0,interval - (getUnixTimestamp() - timestamp));
+    timestamp = getUnixTimestamp(); 
+    setTimeout(sendFrame(),timeout);
 }); 
 
